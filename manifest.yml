@@ -1,0 +1,4 @@
+applications:
+  - name: tokyo-packman
+    random-route: true
+    memory: 256M
