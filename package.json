@@ -16,5 +16,8 @@
     "url": "https://github.com/mergitto/packman-train-server/issues"
   },
   "homepage": "https://github.com/mergitto/packman-train-server#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "ws": "^7.1.2"
+  }
 }
