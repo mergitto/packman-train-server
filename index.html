@@ -10,24 +10,28 @@
 
 <body>
 
+    <ul id="messages"></ul>
     <input type="button" id="sample" value="送信">
 
     <script>
-        var sock = new WebSocket('ws://127.0.0.1:3000');
+        const sock = new WebSocket('ws://127.0.0.1:3000');
+        const messagesElement = document.getElementById('messages');
 
         // 接続
-        sock.addEventListener('open', function (e) {
+        sock.addEventListener('open', e => {
             console.log('Socket 接続成功');
         });
 
         // サーバーからデータを受け取る
-        sock.addEventListener('message', function (e) {
-            console.log(e.data);
+        sock.addEventListener('message', e => {
+            const message = document.createElement('li');
+            message.innerHTML = `hoge: ${e.data}`;
+            messagesElement.appendChild(message)
         });
 
-        document.addEventListener('DOMContentLoaded', function (e) {
+        document.addEventListener('DOMContentLoaded', e => {
             // サーバーにデータを送る
-            document.getElementById('sample').addEventListener('click', function (e) {
+            document.getElementById('sample').addEventListener('click', e => {
                 sock.send('hello');
             });
         });

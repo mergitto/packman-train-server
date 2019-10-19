@@ -1,39 +1,35 @@
-var express = require('express');
-var app = express();
-
-//use path static resource files
+const express = require('express');
+const app = express();
 app.use(express.static('public'));
 
-var port = process.env.PORT || 3000;
+const http = require('http');
+const port = process.env.PORT || 3000;
 
-//wake up http server
-var http = require('http');
-
-//Enable to receive requests access to the specified port
-var server = http.createServer(app).listen(port, function () {
+const server = http.createServer(app).listen(port, () => {
     console.log('Server listening at port %d', port);
 });
 
-var WebSocketServer = require('ws').Server;
-var wss = new WebSocketServer({
+const WebSocketServer = require('ws').Server;
+const wss = new WebSocketServer({
     server: server
 });
 
-var connections = [];
-wss.on('connection', function (ws) {
-    console.log('connect!!');
+let connections = [];
+wss.on('connection', ws => {
+    let num = 0;
     connections.push(ws);
-    ws.on('close', function () {
+    ws.on('close', () => {
         console.log('close');
-        connections = connections.filter(function (conn, i) {
+        connections = connections.filter((conn, i) => {
             return (conn === ws) ? false : true;
         });
     });
-    ws.on('message', function (message) {
+    ws.on('message', message => {
         console.log('message:', message);
         connections.forEach(function (con, i) {
-            con.send(message);
+            con.send(num);
         });
+        num++;
     });
 });
 
