@@ -17,8 +17,12 @@ const wss = new WebSocketServer({
 });
 
 let connections = [];
+let socket_number = 0;
 wss.on('connection', ws => {
     connections.push(ws);
+    ws.id = socket_number;
+    socket_number++;
+
     ws.on('close', () => {
         console.log('close');
         connections = connections.filter((conn, i) => {
@@ -27,12 +31,13 @@ wss.on('connection', ws => {
     });
 
     ws.on('message', message => {
-        console.log('message:', message);
+        // console.log('message:', message);
         connections.forEach((con, i) => {
             // con.send(i);
             getLastLocation(100)
             con.send(message);
         });
+        console.log(ws.id);
     });
 });
 

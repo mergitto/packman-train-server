@@ -17,6 +17,6 @@ export function getLastLocation(socket_id) {
       console.log(err);
       return;
     }
-    console.log(body);
+    // console.log(body);
   });
 };
