@@ -36,6 +36,6 @@ wss.on('connection', ws => {
     });
 });
 
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
