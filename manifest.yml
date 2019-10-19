@@ -1,4 +1,4 @@
 applications:
-  - name: otameshi
+  - name: tokyo-packman
     random-route: true
     memory: 256M
