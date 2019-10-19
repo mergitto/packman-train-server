@@ -1,6 +1,6 @@
 const request = require('request');
 
-export function getLastLocation(socket_id) {
+export async function getLastLocation(socket_id) {
   const url = encodeURI(`https://packman.cybozu.com/k/v1/records.json?app=5&query=socket_id=${socket_id}`);
   let params = {
     url: url,
@@ -12,11 +12,19 @@ export function getLastLocation(socket_id) {
     },
   };
 
-  request(params, function (err, resp, body) {
-    if (err) {
-      console.log(err);
-      return;
-    }
-    // console.log(body);
-  });
+  return await requestApi(params);
 };
+
+function requestApi(params) {
+  return new Promise((resolve, reject) => {
+    request(params, (err, response, body) => {
+      if (err) {
+        console.log(err);
+        reject(err);
+        return;
+      }
+      resolve(body);
+    });
+
+  })
+}

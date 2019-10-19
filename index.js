@@ -3,7 +3,7 @@ const http = require('http');
 const WebSocketServer = require('ws').Server;
 import {
     getLastLocation
-} from './api.js';
+} from './api';
 
 const app = express();
 app.use(express.static('public'));
@@ -34,7 +34,22 @@ wss.on('connection', ws => {
         // console.log('message:', message);
         connections.forEach((con, i) => {
             // con.send(i);
-            getLastLocation(100)
+            const locations = getLastLocation(100)
+            locations
+                .then((result) => {
+                    const record = result.records[0];
+                    const response = {
+                        action: "location",
+                        value: {
+                            lat: record.lat.value,
+                            lon: record.lon.value
+                        }
+                    }
+                    con.send(JSON.stringify(response));
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
             con.send(message);
         });
         console.log(ws.id);

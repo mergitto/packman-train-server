@@ -26,6 +26,7 @@
         // サーバーからデータを受け取る
         sock.addEventListener('message', e => {
             const values = JSON.parse(e.data).value;
+            console.log(e.data)
             const message = document.createElement('li');
             message.innerHTML = `lat: ${values.lat}, lon: ${values.lon}`;
             messagesElement.appendChild(message)
