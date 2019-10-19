@@ -1,6 +1,9 @@
 const express = require('express');
 const http = require('http');
 const WebSocketServer = require('ws').Server;
+import {
+    getLastLocation
+} from './api.js';
 
 const app = express();
 app.use(express.static('public'));
@@ -27,6 +30,7 @@ wss.on('connection', ws => {
         console.log('message:', message);
         connections.forEach((con, i) => {
             // con.send(i);
+            getLastLocation(100)
             con.send(message);
         });
     });
