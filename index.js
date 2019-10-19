@@ -1,7 +1,9 @@
 const express = require('express');
 const http = require('http');
 const WebSocketServer = require('ws').Server;
-import getLastLocation from './api.js';
+import {
+    getLastLocation
+} from './api.js';
 
 const app = express();
 app.use(express.static('public'));
