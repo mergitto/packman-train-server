@@ -14,7 +14,8 @@
     <input type="button" id="sample" value="送信">
 
     <script>
-        const sock = new WebSocket('wss://tokyo-packman.us-south.cf.appdomain.cloud/');
+        // const sock = new WebSocket('wss://tokyo-packman.us-south.cf.appdomain.cloud/');
+        const sock = new WebSocket('ws://localhost:3000');
         const messagesElement = document.getElementById('messages');
 
         // 接続
@@ -24,15 +25,23 @@
 
         // サーバーからデータを受け取る
         sock.addEventListener('message', e => {
+            console.log(e)
             const message = document.createElement('li');
-            message.innerHTML = `hoge: ${e.data}`;
+            message.innerHTML = `hoge: ${e.data.i}`;
             messagesElement.appendChild(message)
         });
 
         document.addEventListener('DOMContentLoaded', e => {
             // サーバーにデータを送る
             document.getElementById('sample').addEventListener('click', e => {
-                sock.send('hello');
+                const obj = {
+                    action: 'location',
+                    value: {
+                        lat: 12.3456,
+                        lon: 65.4321
+                    }
+                };
+                sock.send(JSON.stringify(obj));
             });
         });
     </script>

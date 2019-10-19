@@ -1,22 +1,20 @@
 const express = require('express');
+const http = require('http');
+const WebSocketServer = require('ws').Server;
+
 const app = express();
 app.use(express.static('public'));
-
-const http = require('http');
 const port = process.env.PORT || 3000;
-
 const server = http.createServer(app).listen(port, () => {
     console.log('Server listening at port %d', port);
 });
 
-const WebSocketServer = require('ws').Server;
 const wss = new WebSocketServer({
     server: server
 });
 
 let connections = [];
 wss.on('connection', ws => {
-    let num = 0;
     connections.push(ws);
     ws.on('close', () => {
         console.log('close');
@@ -24,12 +22,13 @@ wss.on('connection', ws => {
             return (conn === ws) ? false : true;
         });
     });
+
     ws.on('message', message => {
         console.log('message:', message);
-        connections.forEach(function (con, i) {
-            con.send(num);
+        connections.forEach((con, i) => {
+            // con.send(i);
+            con.send(message);
         });
-        num++;
     });
 });
 
