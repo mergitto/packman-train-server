@@ -1,6 +1,7 @@
 const express = require('express');
 const http = require('http');
 const WebSocketServer = require('ws').Server;
+import getLastLocation from './api.js';
 
 const app = express();
 app.use(express.static('public'));
@@ -36,26 +37,3 @@ wss.on('connection', ws => {
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
-
-function getLastLocation(socket_id) {
-    const request = require('request');
-
-    const url = encodeURI(`https://packman.cybozu.com/k/v1/records.json?app=5&query=socket_id=${socket_id}`);
-    let params = {
-        url: url,
-        method: 'GET',
-        json: true,
-        // 本当はtokenを乗せてはいけない
-        headers: {
-            'X-Cybozu-API-Token': 'LPjpRT5Ekix06RdzJK78cwLpg0VlY2vrdYqA8zGi',
-        },
-    };
-
-    request(params, function (err, resp, body) {
-        if (err) {
-            console.log(err);
-            return;
-        }
-        console.log(body);
-    });
-};
