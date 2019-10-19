@@ -14,6 +14,7 @@ const wss = new WebSocketServer({
     server: server
 });
 
+const currentRoom = [];
 let connections = [];
 wss.on('connection', ws => {
     let num = 0;
@@ -36,3 +37,11 @@ wss.on('connection', ws => {
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
+
+function joinRoom(socket, room){
+    socket.join(room)
+    currentRoom[socket.id] = room
+    socket.broadcast.to(room).emit("message", {
+        text: socket.id + " joined room"
+    })
+}
