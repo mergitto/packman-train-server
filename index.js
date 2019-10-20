@@ -41,7 +41,6 @@ wss.on('connection', ws => {
         } = location.value;
 
         connections.forEach((con, i) => {
-            console.log(ws.id)
             if (con == ws) {
                 const req = createLocation(ws.id, lat, lon);
                 req
@@ -75,7 +74,6 @@ wss.on('connection', ws => {
                     console.log(err);
                 });
         });
-        console.log(ws.id);
     });
 });
 
