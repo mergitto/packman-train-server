@@ -14,7 +14,8 @@
     <input type="button" id="sample" value="送信">
 
     <script>
-        const sock = new WebSocket('wss://tokyo-packman.us-south.cf.appdomain.cloud/');
+        // const sock = new WebSocket('wss://tokyo-packman.us-south.cf.appdomain.cloud/');
+        const sock = new WebSocket('ws://127.0.0.1:3000/');
         const messagesElement = document.getElementById('messages');
 
         // 接続
@@ -24,6 +25,7 @@
 
         // サーバーからデータを受け取る
         sock.addEventListener('message', e => {
+            console.log(e.data);
             const data = JSON.parse(e.data);
             if (isEmpty(data)) {
                 return
