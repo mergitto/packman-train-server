@@ -25,8 +25,12 @@
 
         // サーバーからデータを受け取る
         sock.addEventListener('message', e => {
-            const values = JSON.parse(e.data).value;
-            console.log(e.data)
+            const data = JSON.parse(e.data);
+            if (isEmpty(data)) {
+                return
+            }
+
+            const values = data.value;
             const message = document.createElement('li');
             message.innerHTML = `lat: ${values.lat}, lon: ${values.lon}`;
             messagesElement.appendChild(message)
@@ -45,6 +49,10 @@
                 sock.send(JSON.stringify(obj));
             });
         });
+
+        function isEmpty(obj) {
+            return !Object.keys(obj).length;
+        }
     </script>
 </body>
 

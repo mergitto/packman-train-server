@@ -15,6 +15,36 @@ export async function getLastLocation(socket_id) {
   return await requestApi(params);
 };
 
+export async function createLocation(socket_id, lat, lon) {
+  let obj = {
+    app: 5,
+    record: {
+      socket_id: {
+        value: socket_id
+      },
+      lat: {
+        value: lat
+      },
+      lon: {
+        value: lon
+      }
+    }
+  };
+
+  let params = {
+    url: 'https://packman.cybozu.com/k/v1/record.json',
+    method: 'POST',
+    json: true,
+    headers: {
+      'X-Cybozu-API-Token': 'LPjpRT5Ekix06RdzJK78cwLpg0VlY2vrdYqA8zGi',
+      'Content-Type': 'application/json',
+    },
+    body: obj,
+  };
+
+  return await requestApi(params);
+}
+
 function requestApi(params) {
   return new Promise((resolve, reject) => {
     request(params, (err, response, body) => {
@@ -25,6 +55,5 @@ function requestApi(params) {
       }
       resolve(body);
     });
-
-  })
+  });
 }

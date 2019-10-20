@@ -2,7 +2,8 @@ const express = require('express');
 const http = require('http');
 const WebSocketServer = require('ws').Server;
 import {
-    getLastLocation
+    getLastLocation,
+    createLocation
 } from './api';
 
 const app = express();
@@ -32,25 +33,43 @@ wss.on('connection', ws => {
 
     ws.on('message', message => {
         // console.log('message:', message);
+        // parseが必要
+        const location = JSON.parse(message)
+        const {
+            lat,
+            lon
+        } = location.value;
+
         connections.forEach((con, i) => {
-            // con.send(i);
-            const locations = getLastLocation(100)
+            const req = createLocation(ws.id, lat, lon);
+            req
+                .then((result) => {
+                    console.log(result);
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+            // postが終わってからで,というかgetアクションいるかな
+            const locations = getLastLocation(ws.id)
             locations
                 .then((result) => {
                     const record = result.records[0];
+                    if (record === undefined) {
+                        con.send(JSON.stringify({}));
+                        return
+                    }
                     const response = {
                         action: "location",
                         value: {
                             lat: record.lat.value,
                             lon: record.lon.value
                         }
-                    }
+                    };
                     con.send(JSON.stringify(response));
                 })
                 .catch((err) => {
                     console.log(err);
                 });
-            con.send(message);
         });
         console.log(ws.id);
     });
