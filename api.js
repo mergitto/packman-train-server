@@ -1,7 +1,7 @@
 const request = require('request');
 
 export async function getLastLocation(socket_id) {
-  const url = encodeURI(`https://packman.cybozu.com/k/v1/records.json?app=5&query=socket_id=${socket_id}`);
+  const url = encodeURI(`https://packman.cybozu.com/k/v1/records.json?app=5&query=socket_id=${socket_id}order by created_at desc limit 1`);
   let params = {
     url: url,
     method: 'GET',

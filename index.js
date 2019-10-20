@@ -53,7 +53,7 @@ wss.on('connection', ws => {
             const locations = getLastLocation(ws.id)
             locations
                 .then((result) => {
-                    const record = result.records[0];
+                    const record = result.record;
                     if (record === undefined) {
                         con.send(JSON.stringify({}));
                         return
@@ -62,7 +62,8 @@ wss.on('connection', ws => {
                         action: "location",
                         value: {
                             lat: record.lat.value,
-                            lon: record.lon.value
+                            lon: record.lon.value,
+                            socketId: ws.id
                         }
                     };
                     con.send(JSON.stringify(response));
