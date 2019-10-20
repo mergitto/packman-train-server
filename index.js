@@ -65,7 +65,8 @@ wss.on('connection', ws => {
                         action: "location",
                         value: {
                             lat: record.lat.value,
-                            lon: record.lon.value
+                            lon: record.lon.value,
+                            socketId: ws.id
                         }
                     };
                     con.send(JSON.stringify(response));
