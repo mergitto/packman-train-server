@@ -41,19 +41,21 @@ wss.on('connection', ws => {
         } = location.value;
 
         connections.forEach((con, i) => {
-            const req = createLocation(ws.id, lat, lon);
-            req
-                .then((res) => {
-                    console.log(res);
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
+            console.log(ws.id)
+            if (con == ws) {
+                const req = createLocation(ws.id, lat, lon);
+                req
+                    .then((res) => {
+                        console.log(res);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    })
+            }
             // postが終わってからで,というかgetアクションいるかな
             const locations = getLastLocation(ws.id)
             locations
                 .then((result) => {
-                    console.log(result);
                     const record = result.records[0];
                     if (record === undefined) {
                         con.send(JSON.stringify({}));
